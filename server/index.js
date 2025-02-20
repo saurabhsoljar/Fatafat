@@ -5,6 +5,7 @@ dotenv.config();
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import helmet from "helmet";
+import connectDB from "./config/connectDB.js";
 
 const app = express();
 app.use(
@@ -13,24 +14,26 @@ app.use(
     origin: process.env.FRONTEND_URL,
   })
 );
-app.use(express.json);
+app.use(express.json());
 app.use(cookieParser());
-app.use(morgan());
+app.use(morgan('dev'));
 app.use(
   helmet({
     crossOriginEmbedderPolicy: false,
   })
 );
 
-const PORT = 8080 || process.env.PORT;
+const PORT =process.env.PORT || 8080 ;
 
-app.get("/",(request, response)=>{
+app.get("/", (request, response) => {
   //server to clint
   response.json({
-    message : "server is running " + PORT
-  })
-})
+    message: "server is running " + PORT,
+  });
+});
 
-app.listen(PORT, () => {
-  console.log("server is running", PORT);
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log("server is running", PORT);
+  });
 });
