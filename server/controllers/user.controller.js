@@ -5,6 +5,7 @@ import verifyEmailTemplate from "../utils/veryfyEmailTemplate.js";
 import generatedAccessToken from "../utils/generatedAccessToken.js";
 import genertedRefshToken from "../utils/generatedRefreshToken.js";
 
+//register controller
 async function registerUserController(request, response) {
   try {
     const { name, email, password } = request.body;
@@ -67,6 +68,7 @@ async function registerUserController(request, response) {
   }
 }
 
+//verify email controller
 async function verifyEmailController(request, response) {
   try {
     const { code } = request.query;  
@@ -191,6 +193,41 @@ async function loginController(request,response) {
 }
 
 // logout controllet
+async function logoutController(request, response) {
+  try {
+    const userId = request.userId; // Ensure middleware sets this
 
+    // Clear cookies
+    const cookiesOption = {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None"
+    };
+    
+    response.clearCookie("accessToken", cookiesOption);
+    response.clearCookie("refreshToken", cookiesOption);
 
-export { registerUserController, verifyEmailController,loginController};
+    
+    await UserModel.findByIdAndUpdate(
+      userId,
+      { $set: { refreshToken: "" } },  
+      { new: true }
+    );
+
+    return response.json({
+      message: "Logout successful",
+      error: false,
+      success: true
+    });
+
+  } catch (error) {
+    console.error("Logout error:", error);  
+    return response.status(500).json({
+      message: error.message,
+      error: true,
+      success: false
+    });
+  }
+}
+
+export { registerUserController, verifyEmailController,loginController,logoutController};
