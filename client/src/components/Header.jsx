@@ -1,20 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../assets/logo.png";
 import Search from "./Search";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
 import UseMobile from "../hooks/UseMobile";
 import { BsCart4 } from "react-icons/bs";
+import { useSelector } from "react-redux";
+import { store } from "../store/store";
+import { GoTriangleDown } from "react-icons/go";
+import { GoTriangleUp } from "react-icons/go";
+import UserMenu from "./UserMenu";
 
 const Header = () => {
   const [isMobileCheck] = UseMobile();
   const location = useLocation();
   const isSearchPage = location.pathname === "/search";
   const navigate = useNavigate();
+  const user = useSelector((state) => state?.user);
+  const [openUserMenu, setOpenUserMenu] = useState(false);
+
+  console.log("user from store", user);
 
   const redirectToLoginPage = () => {
     navigate("/login");
   };
+
+  const handleCloseUserMenu = () => {
+    setOpenUserMenu(false)
+  }
 
   return (
     <header className="h-24 lg:h-20 lg:shadow-md static top-0   flex flex-col justify-center bg-white">
@@ -54,10 +67,35 @@ const Header = () => {
             </button>
 
             {/* This is used for DeskTop Part */}
-            <div className="hidden lg:flex items-center gap-10">
-              <button onClick={redirectToLoginPage} className="text-lg px-2 ">
-                Login
-              </button>
+            {/* Account click to open section */}
+            <div className="hidden lg:flex items-center gap-1 cursor-pointer">
+              {user?._id ? (
+                <div className="relative">
+                  <div
+                    onClick={() => setOpenUserMenu((prev) => !prev)}
+                    className="flex select-none items-center gap-2"
+                  >
+                    <p>Account</p>
+                    {openUserMenu ? (
+                      <GoTriangleUp size={25} />
+                    ) : (
+                      <GoTriangleDown size={25} />
+                    )}
+                  </div>
+                  {openUserMenu && (
+                    <div className="absolute right-0 top-12">
+                      <div className="bg-white rounded p-4 min-w-52 lg:shadow-lg">
+                        <UserMenu close={handleCloseUserMenu} />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <button onClick={redirectToLoginPage} className="text-lg px-2 ">
+                  Login
+                </button>
+              )}
+
               <button className="flex items-center gap-2 bg-green-800 hover:bg-green-700 px-3 py-3 rounded text-white">
                 {/* Add tp cart icons */}
                 <div className="animate-bounce">

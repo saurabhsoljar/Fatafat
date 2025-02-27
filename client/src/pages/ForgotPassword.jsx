@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import Axios from "../utils/Axios";
 import SummaryApi from "../common/SummaryApi";
 import AxiosToastError from "../utils/AxiosToastError";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
   // useState Hooks
@@ -51,7 +51,7 @@ const ForgotPassword = () => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        navigate("/varification-otp", {
+        navigate("/verification-otp", {
           state: data,
         });
         setData({

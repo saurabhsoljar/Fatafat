@@ -1,6 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { FaRegEyeSlash } from "react-icons/fa6";
-import { FaRegEye } from "react-icons/fa6";
 import toast from "react-hot-toast";
 import Axios from "../utils/Axios";
 import SummaryApi from "../common/SummaryApi";
@@ -37,7 +35,7 @@ const OtpVerification = () => {
         ...SummaryApi.forgot_password_otp_verification,
         data: {
           otp: data.join(""),
-          email: location.state?.email,
+          email: location?.state?.email,
         },
       });
 
@@ -52,12 +50,13 @@ const OtpVerification = () => {
         navigate("/reset-password", {
           state: {
             data: response.data,
-            email: location.state?.email,
+            email: location?.state?.email,
           },
         });
       }
     } catch (error) {
       // Handle API errors using AxiosToastError utility
+      console.log("error", error);
       AxiosToastError(error);
     }
   };
@@ -132,7 +131,7 @@ const OtpVerification = () => {
         </form>
 
         <p>
-          Alreadt have account ?
+          Already have account ?
           <Link
             to={"/login"}
             className="font-semibold text-green-700 hover:text-green-800"
