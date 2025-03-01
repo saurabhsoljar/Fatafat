@@ -86,6 +86,59 @@ const UserMenu = ({ close }) => {
 
       {/* Menu Items */}
       <div className="space-y-2 mt-3">
+
+        {/* Category */}
+        <Link
+          to="/dashboard/Category"
+          onClick={close}
+          className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"
+        >
+          <div className="flex items-center gap-2">
+            <FiPackage className="text-gray-600" />
+            <span className="text-sm">Category</span>
+          </div>
+          <FiChevronRight className="text-gray-400" />
+        </Link>
+
+        {/* Sub-Category */}
+        <Link
+          to="/dashboard/SubCategory"
+          onClick={close}
+          className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"
+        >
+          <div className="flex items-center gap-2">
+            <FiPackage className="text-gray-600" />
+            <span className="text-sm">Sub Category</span>
+          </div>
+          <FiChevronRight className="text-gray-400" />
+        </Link>
+
+        {/* Upload Product */}
+        <Link
+          to="/dashboard/Upload-product"
+          onClick={close}
+          className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"
+        >
+          <div className="flex items-center gap-2">
+            <FiPackage className="text-gray-600" />
+            <span className="text-sm">Upload Product</span>
+          </div>
+          <FiChevronRight className="text-gray-400" />
+        </Link>
+
+        {/* Product */}
+        <Link
+          to="/dashboard/product"
+          onClick={close}
+          className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"
+        >
+          <div className="flex items-center gap-2">
+            <FiPackage className="text-gray-600" />
+            <span className="text-sm">Product</span>
+          </div>
+          <FiChevronRight className="text-gray-400" />
+        </Link>
+
         <Link
           to="/dashboard/myorders"
           onClick={close}
