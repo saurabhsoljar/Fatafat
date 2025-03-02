@@ -7,21 +7,34 @@ import AxiosToastError from "../utils/AxiosToastError";
 import Axios from "../utils/Axios";
 
 const UploadCategoryModel = ({ close, fetchData }) => {
+  // State management for category data and loading status
   const [data, setData] = useState({
     name: "",
     image: "",
   });
-
   const [loading, setLoading] = useState(false);
 
+  /**
+   * Handles text input changes for category name
+   * @param {Object} e - Event object from input field
+   */
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setData((prev) => ({ ...prev, [name]: value }));
   };
 
+  /**
+   * Handles form submission for creating new category
+   * 1. Validates category name
+   * 2. Sends POST request to create category
+   * 3. Handles success/error responses
+   * 4. Closes modal and refreshes category list
+   * @param {Object} e - Event object from form submission
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validation check
     if (!data.name.trim()) {
       toast.error("Please enter a category name.");
       return;
@@ -29,6 +42,7 @@ const UploadCategoryModel = ({ close, fetchData }) => {
 
     setLoading(true);
     try {
+      // API call to create category
       const response = await Axios({
         ...SummaryApi.addCategory,
         data: data,
@@ -38,8 +52,8 @@ const UploadCategoryModel = ({ close, fetchData }) => {
       if (responseData.success) {
         toast.success(responseData.message);
         close();
-
-        // Modified safe execution
+        
+        // Refresh parent component's category list
         if (typeof fetchData === "function") {
           fetchData();
         }
@@ -53,25 +67,30 @@ const UploadCategoryModel = ({ close, fetchData }) => {
     }
   };
 
+  /**
+   * Handles image upload for category
+   * 1. Accepts image file from input
+   * 2. Uploads image to cloud storage
+   * 3. Updates state with image URL
+   * @param {Object} e - Event object from file input
+   */
   const handleUploadCategoryImage = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     try {
       setLoading(true);
+      // Upload image to cloud service
       const response = await uploadImage(file);
       console.log("Image upload response:", response);
 
-      if (
-        response &&
-        response.data &&
-        (response.data.url || response.data.imageUrl)
-      ) {
+      // Handle different response formats
+      if (response?.data?.url || response?.data?.imageUrl) {
         setData((prev) => ({
           ...prev,
           image: response.data.url || response.data.imageUrl,
         }));
-      } else if (response && response.url) {
+      } else if (response?.url) {
         setData((prev) => ({ ...prev, image: response.url }));
       } else {
         toast.error("Invalid image upload response.");
@@ -85,9 +104,11 @@ const UploadCategoryModel = ({ close, fetchData }) => {
     }
   };
 
+  // Modal UI components
   return (
     <section className="fixed top-0 bottom-0 left-0 right-0 bg-neutral-800 bg-opacity-60 flex items-center justify-center">
       <div className="bg-white max-w-4xl w-full p-4 rounded">
+        {/* Modal header with close button */}
         <div className="flex items-center justify-between">
           <h1 className="font-semibold">Category</h1>
           <button onClick={close} className="w-fit block ml-auto">
@@ -95,7 +116,9 @@ const UploadCategoryModel = ({ close, fetchData }) => {
           </button>
         </div>
 
+        {/* Category form */}
         <form className="my-3 grid gap-2" onSubmit={handleSubmit}>
+          {/* Name input section */}
           <div className="grid gap-1">
             <label htmlFor="categoryName">Name</label>
             <input
@@ -109,9 +132,11 @@ const UploadCategoryModel = ({ close, fetchData }) => {
             />
           </div>
 
+          {/* Image upload section */}
           <div className="grid gap-1">
             <p>Image</p>
             <div className="flex gap-3 flex-col lg:flex-row items-center">
+              {/* Image preview area */}
               <div className="border bg-blue-50 h-36 w-full lg:w-36 flex items-center justify-center">
                 {data.image ? (
                   <img
@@ -123,12 +148,10 @@ const UploadCategoryModel = ({ close, fetchData }) => {
                   <p className="text-sm text-neutral-500">No Image</p>
                 )}
               </div>
+              
+              {/* Image upload button */}
               <label htmlFor="UploadCategoryImage">
-                <div
-                  className={`${
-                    !data.name ? "bg-gray-400" : "bg-primary-200"
-                  } px-4 py-2 rounded cursor-pointer`}
-                >
+                <div className={`${!data.name ? "bg-gray-400" : "bg-primary-200"} px-4 py-2 rounded cursor-pointer`}>
                   Upload Image
                 </div>
                 <input
@@ -142,6 +165,7 @@ const UploadCategoryModel = ({ close, fetchData }) => {
             </div>
           </div>
 
+          {/* Submit button with loading state */}
           <button
             className={`${
               data.name && data.image
