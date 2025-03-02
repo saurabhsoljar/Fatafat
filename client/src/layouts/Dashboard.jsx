@@ -7,7 +7,7 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       <div className="flex flex-col lg:flex-row min-h-screen">
         {/* Left Navigation - Glass Morphism Design */}
-        <nav className="lg:sticky lg:top-0 lg:h-screen lg:w-72 lg:border-r lg:border-white/10 lg:bg-gray-900/80 lg:backdrop-blur-lg">
+        <nav className="lg:sticky lg:top-0 lg:h-screen lg:w-72 lg:border-r lg:border-white/10 lg:bg-gray-900/80 lg:backdrop-blur-lg max-[calc(100vh-96px)]:">
           <div className="p-6 lg:p-8 hidden lg:block">
             <h2 className="text-2xl font-bold text-white mb-8">Dashboard</h2>
             <UserMenu />

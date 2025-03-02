@@ -6,9 +6,7 @@ import { FaRegUserCircle } from "react-icons/fa";
 import UseMobile from "../hooks/UseMobile";
 import { BsCart4 } from "react-icons/bs";
 import { useSelector } from "react-redux";
-import { store } from "../store/store";
-import { GoTriangleDown } from "react-icons/go";
-import { GoTriangleUp } from "react-icons/go";
+import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
 import UserMenu from "./UserMenu";
 
 const Header = () => {
@@ -27,7 +25,7 @@ const Header = () => {
     setOpenUserMenu(false);
   };
 
-  const handlemobileUser = () => {
+  const handleMobileUser = () => {
     if (!user._id) {
       navigate("/login");
       return;
@@ -36,91 +34,101 @@ const Header = () => {
   };
 
   return (
-    <header className="h-24 lg:h-20 lg:shadow-md static top-0   flex flex-col justify-center bg-white">
-      {!(isSearchPage && isMobileCheck) && (
-        <div className="container mx-auto flex items-center  px-2 justify-between gap-1">
-          {/* logo */}
-          <div>
-            <Link to={"/"} className="h-full flex justify-center items-center">
-              <img
-                src={logo}
-                width={150}
-                height={60}
-                alt="logo"
-                className="hidden lg:block"
-              />
+    <header className="fixed w-full top-0 left-0 right-0 h-20 bg-white shadow-md z-50">
+      <div className="container mx-auto h-full px-4">
+        <div className="h-full flex items-center justify-between">
+          {/* Logo Section */}
+          <Link
+            to="/"
+            className="flex items-center transition-transform hover:scale-105"
+          >
+            <img
+              src={logo}
+              alt="Logo"
+              className="hidden lg:block w-40 object-contain"
+            />
+            <img
+              src={logo}
+              alt="Logo"
+              className="lg:hidden w-32 object-contain"
+            />
+          </Link>
 
-              <img
-                src={logo}
-                width={120}
-                height={60}
-                alt="logo"
-                className="lg:hidden"
-              />
-            </Link>
-          </div>
+          {/* Search Section */}
+          {!isMobileCheck && (
+            <div className="flex-1 max-w-2xl mx-8 hidden lg:block">
+              <Search />
+            </div>
+          )}
 
-          {/* search */}
-          <div className="hidden lg:block">
-            <Search />
-          </div>
-
-          {/* login and my Cart */}
-          <div className="">
-            {/* user icons display in only mobile version */}
-            <button
-              className="text-neutral-600 lg:hidden"
-              onClick={handlemobileUser}
+          {/* Right Section */}
+          <div className="flex items-center gap-4 lg:gap-6">
+            {/* User Section */}
+            <div 
+              className="relative group"
+              onMouseEnter={() => !isMobileCheck && setOpenUserMenu(true)}
+              onMouseLeave={() => !isMobileCheck && setOpenUserMenu(false)}
             >
-              <FaRegUserCircle size={26} />
-            </button>
-
-            {/* This is used for DeskTop Part */}
-            {/* Account click to open section */}
-            <div className="hidden lg:flex items-center gap-1 cursor-pointer">
               {user?._id ? (
-                <div className="relative">
-                  <div
-                    onClick={() => setOpenUserMenu((prev) => !prev)}
-                    className="flex select-none items-center gap-2"
+                <>
+                  <button
+                    onClick={() => isMobileCheck && setOpenUserMenu(!openUserMenu)}
+                    className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors"
                   >
-                    <p>Account</p>
-                    {openUserMenu ? (
-                      <GoTriangleUp size={25} />
-                    ) : (
-                      <GoTriangleDown size={25} />
-                    )}
-                  </div>
-                  {openUserMenu && (
-                    <div className="absolute right-0 top-12">
-                      <div className="bg-white rounded p-4 min-w-52 lg:shadow-lg">
-                        <UserMenu close={handleCloseUserMenu} />
-                      </div>
+                    <FaRegUserCircle className="w-6 h-6" />
+                    <span className="hidden lg:block font-medium">
+                      {user.name || "Account"}
+                    </span>
+                    <span className="hidden lg:block">
+                      {openUserMenu ? (
+                        <GoTriangleUp className="w-4 h-4" />
+                      ) : (
+                        <GoTriangleDown className="w-4 h-4" />
+                      )}
+                    </span>
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  <div
+                    className={`absolute right-0 top-12 bg-white rounded-xl shadow-2xl border border-gray-100 min-w-48 transition-all duration-300 transform ${
+                      openUserMenu
+                        ? "opacity-100 visible translate-y-0"
+                        : "opacity-0 invisible -translate-y-2"
+                    }`}
+                  >
+                    <div className="p-2">
+                      <UserMenu close={handleCloseUserMenu} />
                     </div>
-                  )}
-                </div>
+                  </div>
+                </>
               ) : (
-                <button onClick={redirectToLoginPage} className="text-lg px-2 ">
-                  Login
+                <button
+                  onClick={redirectToLoginPage}
+                  className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors"
+                >
+                  <FaRegUserCircle className="w-6 h-6" />
+                  <span className="hidden lg:block font-medium">Login</span>
                 </button>
               )}
-
-              <button className="flex items-center gap-2 bg-green-800 hover:bg-green-700 px-3 py-3 rounded text-white">
-                {/* Add tp cart icons */}
-                <div className="animate-bounce">
-                  <BsCart4 size={26} />
-                </div>
-                <div className="font-semibold">
-                  <p> My Cart</p>
-                </div>
-              </button>
             </div>
+
+            {/* Cart Button */}
+            <button className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 px-4 py-2 rounded-full text-white shadow-md hover:shadow-xl transition-all relative">
+              <BsCart4 className="w-6 h-6" />
+              <span className="font-semibold hidden lg:block">My Cart</span>
+              <span className="absolute -top-2 -right-1 bg-white text-blue-600 rounded-full px-2 py-1 text-xs font-bold shadow-sm">
+                0
+              </span>
+            </button>
           </div>
         </div>
-      )}
 
-      <div className="container mx-auto px-2 lg:hidden">
-        <Search />
+        {/* Mobile Search */}
+        {isMobileCheck && !isSearchPage && (
+          <div className="absolute bottom-0 left-0 right-0 px-4 pb-2 bg-white border-t border-gray-100">
+            <Search />
+          </div>
+        )}
       </div>
     </header>
   );
