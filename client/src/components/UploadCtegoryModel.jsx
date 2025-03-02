@@ -1,5 +1,3 @@
-
-
 import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import uploadImage from "../utils/UploadImage";
@@ -23,17 +21,30 @@ const UploadCategoryModel = ({ close, fetchData }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!data.name.trim()) {
+      toast.error("Please enter a category name.");
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await Axios({
         ...SummaryApi.addCategory,
         data: data,
       });
+
       const { data: responseData } = response;
       if (responseData.success) {
         toast.success(responseData.message);
         close();
-        fetchData();
+
+        // Modified safe execution
+        if (typeof fetchData === "function") {
+          fetchData();
+        }
+      } else {
+        toast.error(responseData.message || "Something went wrong.");
       }
     } catch (error) {
       AxiosToastError(error);
@@ -51,13 +62,17 @@ const UploadCategoryModel = ({ close, fetchData }) => {
       const response = await uploadImage(file);
       console.log("Image upload response:", response);
 
-      if (response && response.data && (response.data.url || response.data.imageUrl)) {
+      if (
+        response &&
+        response.data &&
+        (response.data.url || response.data.imageUrl)
+      ) {
         setData((prev) => ({
           ...prev,
           image: response.data.url || response.data.imageUrl,
         }));
       } else if (response && response.url) {
-        setData((prev) => ({...prev, image: response.url}));
+        setData((prev) => ({ ...prev, image: response.url }));
       } else {
         toast.error("Invalid image upload response.");
         console.error("Invalid response format:", response);
@@ -110,7 +125,9 @@ const UploadCategoryModel = ({ close, fetchData }) => {
               </div>
               <label htmlFor="UploadCategoryImage">
                 <div
-                  className={`${!data.name ? "bg-gray-400" : "bg-primary-200"} px-4 py-2 rounded cursor-pointer`}
+                  className={`${
+                    !data.name ? "bg-gray-400" : "bg-primary-200"
+                  } px-4 py-2 rounded cursor-pointer`}
                 >
                   Upload Image
                 </div>
@@ -126,7 +143,11 @@ const UploadCategoryModel = ({ close, fetchData }) => {
           </div>
 
           <button
-            className={`${data.name && data.image ? "bg-primary-200 hover:bg-primary-100" : "bg-slate-200"} py-2 font-semibold`}
+            className={`${
+              data.name && data.image
+                ? "bg-primary-200 hover:bg-primary-100"
+                : "bg-slate-200"
+            } py-2 font-semibold`}
             disabled={!(data.name && data.image) || loading}
           >
             {loading ? "Adding..." : "Add Category"}

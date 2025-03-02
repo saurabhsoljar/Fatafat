@@ -16,12 +16,13 @@ import toast from "react-hot-toast";
 import AxiosToastError from "../utils/AxiosToastError";
 import { HiExternalLink } from "react-icons/hi";
 
+
 const UserMenu = ({ close }) => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogot = async () => {
+  const handleLogout = async () => {
     try {
       const response = await Axios({
         ...SummaryApi.logout,
@@ -168,7 +169,7 @@ const UserMenu = ({ close }) => {
 
       {/* Logout Button */}
       <button
-        onClick={handleLogot}
+        onClick={handleLogout}
         className="w-full mt-4 flex items-center gap-2 p-2 text-red-600 hover:bg-red-50 rounded-lg"
       >
         <FiLogOut className="text-lg" />
