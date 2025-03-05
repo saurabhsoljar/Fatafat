@@ -1,8 +1,12 @@
 import React from "react";
 import UserMenu from "../components/UserMenu";
 import { Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Dashboard = () => {
+  const user = useSelector(state => state.user)
+  
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       <div className="flex flex-col lg:flex-row min-h-screen">

@@ -9,8 +9,12 @@ import EditCategory from "../components/EditCategory";
 import ConfirmBox from "../components/ConfirmBox";
 import toast from "react-hot-toast";
 import AxiosToastError from "../utils/AxiosToastError";
+import { useSelector,useDispatch } from "react-redux";
+import { setAllCategory } from "../store/productSlice";
+
 
 const CategoryPage = () => {
+  const dispatch = useDispatch();
   const [openUploadCategory, setOtpUploadCategory] = useState(false);
   const [loading, setLoading] = useState(false);
   const [Categorydata, setDataCategory] = useState([]);
@@ -24,16 +28,21 @@ const CategoryPage = () => {
     _id: "",
   });
 
+
+  const allCategory = useSelector(state =>state.product.allCategory)
+
+  useState(()=>{
+    setDataCategory(allCategory)
+  },[allCategory])
+  
   const fetchCategory = async () => {
     try {
       setLoading(true);
-      const response = await Axios({
-        ...SummaryApi.getCategory,
-      });
+      const response = await Axios({ ...SummaryApi.getCategory });
       const { data: responseData } = response;
 
       if (responseData.success) {
-        setDataCategory(responseData.data);
+        dispatch(setAllCategory(responseData.data));
       }
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -42,9 +51,31 @@ const CategoryPage = () => {
     }
   };
 
-  useEffect(() => {
-    fetchCategory();
-  }, []);
+  useEffect(()=>{
+    setDataCategory(allCategory)
+  },[allCategory])
+
+  // const fetchCategory = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const response = await Axios({
+  //       ...SummaryApi.getCategory,
+  //     });
+  //     const { data: responseData } = response;
+
+  //     if (responseData.success) {
+  //       setDataCategory(responseData.data);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching categories:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchCategory();
+  // }, []);
 
   const handleDeleteCategory = async()=>{
     try {
@@ -66,8 +97,14 @@ const CategoryPage = () => {
 }
 
 
+
+  // const handleImageError = (event) => {
+  //   event.target.src = "/placeholder-image.png";  
+  // };
+
   const handleImageError = (event) => {
-    event.target.src = "/placeholder-image.png"; // Replace with your placeholder image path
+    event.target.src = "/placeholder-image.png";
+    event.target.onerror = null; // Prevent infinite loop
   };
 
   return (
@@ -83,7 +120,7 @@ const CategoryPage = () => {
       </div>
       {Categorydata.length === 0 && !loading && <NoData />}
       <div className="p-4 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 ">
-        {Categorydata.map((category, index) => (
+        {allCategory.map((category, index) => (
           <div
             key={index}
             className="relative w-32 h-48 rounded-lg shadow-md bg-[#edf4ff] flex flex-col items-center justify-center group transition-all duration-300 hover:shadow-lg hover:bg-[#e2ebff]"

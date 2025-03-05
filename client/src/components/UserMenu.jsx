@@ -15,7 +15,7 @@ import { logout } from "../store/userSlice";
 import toast from "react-hot-toast";
 import AxiosToastError from "../utils/AxiosToastError";
 import { HiExternalLink } from "react-icons/hi";
-
+import isAdmin from "../utils/isAdmin";
 
 const UserMenu = ({ close }) => {
   const user = useSelector((state) => state.user);
@@ -65,7 +65,9 @@ const UserMenu = ({ close }) => {
                   aria-label="Edit profile"
                 />
               </Link>
+              
             </div>
+            <span className="text-sm text-green-600">{user.role === "ADMIN" ? "(Admin)" : ""}</span>
           </div>
           {user.mobile && (
             <div className="text-xs text-gray-500 mt-1">
@@ -87,58 +89,68 @@ const UserMenu = ({ close }) => {
 
       {/* Menu Items */}
       <div className="space-y-2 mt-3">
-
         {/* Category */}
-        <Link
-          to="/dashboard/Category"
-          onClick={close}
-          className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"
-        >
-          <div className="flex items-center gap-2">
-            <FiPackage className="text-gray-600" />
-            <span className="text-sm">Category</span>
-          </div>
-          <FiChevronRight className="text-gray-400" />
-        </Link>
+        {isAdmin(user.role) && (
+          <Link
+            to="/dashboard/Category"
+            onClick={close}
+            className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"
+          >
+            <div className="flex items-center gap-2">
+              <FiPackage className="text-gray-600" />
+              <span className="text-sm">Category</span>
+            </div>
+            <FiChevronRight className="text-gray-400" />
+          </Link>
+        )}
 
         {/* Sub-Category */}
-        <Link
-          to="/dashboard/SubCategory"
-          onClick={close}
-          className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"
-        >
-          <div className="flex items-center gap-2">
-            <FiPackage className="text-gray-600" />
-            <span className="text-sm">Sub Category</span>
-          </div>
-          <FiChevronRight className="text-gray-400" />
-        </Link>
+        {isAdmin(user.role) && (
+          <Link
+            to="/dashboard/SubCategory"
+            onClick={close}
+            className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"
+          >
+            <div className="flex items-center gap-2">
+              <FiPackage className="text-gray-600" />
+              <span className="text-sm">Sub Category</span>
+            </div>
+            <FiChevronRight className="text-gray-400" />
+          </Link>
+        )}
 
         {/* Upload Product */}
-        <Link
-          to="/dashboard/Upload-product"
-          onClick={close}
-          className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"
-        >
-          <div className="flex items-center gap-2">
-            <FiPackage className="text-gray-600" />
-            <span className="text-sm">Upload Product</span>
-          </div>
-          <FiChevronRight className="text-gray-400" />
-        </Link>
+
+        {isAdmin(user.role) && (
+          <Link
+            to="/dashboard/Upload-product"
+            onClick={close}
+            className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"
+          >
+            <div className="flex items-center gap-2">
+              <FiPackage className="text-gray-600" />
+              <span className="text-sm">Upload Product</span>
+            </div>
+            <FiChevronRight className="text-gray-400" />
+          </Link>
+        )}
 
         {/* Product */}
-        <Link
-          to="/dashboard/product"
-          onClick={close}
-          className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"
-        >
-          <div className="flex items-center gap-2">
-            <FiPackage className="text-gray-600" />
-            <span className="text-sm">Product</span>
-          </div>
-          <FiChevronRight className="text-gray-400" />
-        </Link>
+        {isAdmin(user.role) && (
+          <Link
+            to="/dashboard/product"
+            onClick={close}
+            className="flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg"
+          >
+            <div className="flex items-center gap-2">
+              <FiPackage className="text-gray-600" />
+              <span className="text-sm">Product</span>
+            </div>
+            <FiChevronRight className="text-gray-400" />
+          </Link>
+        )}
+
+        {/* My Orders section */}
 
         <Link
           to="/dashboard/myorders"

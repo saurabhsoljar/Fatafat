@@ -13,10 +13,10 @@ import Profile from "../pages/Profile";
 import MyOrders from "../pages/MyOrders";
 import Address from "../pages/Address";
 import CategoryPage from "../pages/CategoryPage";
-import SubCtegoryPage from "../pages/SubCtegoryPage";
+import SubCategoryPage from "../pages/SubCategoryPage";
 import UploadProduct from "../pages/UploadProduct";
 import ProductAdmin from "../pages/ProductAdmin";
-
+import AdminPermision from "../layouts/AdminPermision";
 
 const router = createBrowserRouter([
   {
@@ -73,19 +73,35 @@ const router = createBrowserRouter([
           },
           {
             path: "category",
-            element: <CategoryPage />,
+            element: (
+              <AdminPermision>
+                <CategoryPage />
+              </AdminPermision>
+            ),
           },
           {
             path: "subcategory",
-            element: <SubCtegoryPage />,
+            element: (
+              <AdminPermision>
+                <SubCategoryPage />
+              </AdminPermision>
+            ),
           },
           {
             path: "upload-product",
-            element: <UploadProduct />,
+            element: (
+              <AdminPermision>
+                <UploadProduct />
+              </AdminPermision>
+            ),
           },
           {
             path: "product",
-            element: <ProductAdmin/>
+            element: (
+              <AdminPermision>
+                <ProductAdmin />
+              </AdminPermision>
+            ),
           },
         ],
       },
