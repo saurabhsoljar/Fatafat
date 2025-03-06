@@ -8,7 +8,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import ViewImage from "../components/ViewImage";
 import { HiPencil } from "react-icons/hi";
 import { MdDelete } from "react-icons/md";
-
+import { useSelector } from "react-redux";
 
 const SubCategoryPage = () => {
   const [openAddSubCategory, setOpenAddSubCategory] = useState(false);
@@ -17,33 +17,36 @@ const SubCategoryPage = () => {
   const columnHelper = createColumnHelper();
   const [ImageURL, setImageURL] = useState("");
 
-  // SubCategoryPage.js
-const fetchSubCategory = async () => {
-  try {
-    setLoading(true);
-    const response = await Axios({
-      ...SummaryApi.getSubCategory,
-      method: "get",
-      params: { _: new Date().getTime() } // Cache buster
-    });
+  const allCategories = useSelector((state) => state.product.allCategory);
 
-    if (response.data.success) {
-      setData(prev => 
-        JSON.stringify(prev) === JSON.stringify(response.data.data)
-          ? prev // Keep previous reference if same data
-          : response.data.data || [] // New reference if data changed
-      );
+  // SubCategoryPage.js
+  const fetchSubCategory = async () => {
+    try {
+      setLoading(true);
+      const response = await Axios({
+        ...SummaryApi.getSubCategory,
+        method: "get",
+        params: { _: new Date().getTime() }, // Cache buster
+      });
+
+      if (response.data.success) {
+        setData(
+          (prev) =>
+            JSON.stringify(prev) === JSON.stringify(response.data.data)
+              ? prev // Keep previous reference if same data
+              : response.data.data || [] // New reference if data changed
+        );
+      }
+    } catch (error) {
+      setData([]);
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    setData([]);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   useEffect(() => {
     fetchSubCategory();
-  }, [allCategories]);
+  }, []);
 
   const columns = [
     columnHelper.accessor("name", {
@@ -69,7 +72,7 @@ const fetchSubCategory = async () => {
       cell: ({ row }) => {
         return (
           <>
-            {row.original.category.map((c) => ( 
+            {row.original.category.map((c) => (
               <p key={c._id} className="shadow-md px-1 inline-block">
                 {c.name}
               </p>
@@ -83,10 +86,10 @@ const fetchSubCategory = async () => {
       cell: ({ row }) => {
         return (
           <div className="flex items-center justify-center gap-3">
-            <button className="p-2 rounded-full bg-green-200 text-green-500 hover:text-green-600">
+            <button className="p-2 rounded-full bg-green-200 text-green-500 hover:bg-green-300">
               <HiPencil size={20} />
             </button>
-            <button className="p-2 rounded-full text-red-500 bg-red-200 hover:text-green-600">
+            <button className="p-2 rounded-full text-red-500 bg-red-200 hover:bg-red-300">
               <MdDelete size={20} />
             </button>
           </div>
@@ -121,9 +124,7 @@ const fetchSubCategory = async () => {
         />
       )}
 
-      {ImageURL && (
-        <ViewImage url={ImageURL} close={() => setImageURL("")} />
-      )}
+      {ImageURL && <ViewImage url={ImageURL} close={() => setImageURL("")} />}
     </section>
   );
 };

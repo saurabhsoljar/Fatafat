@@ -98,14 +98,14 @@ const CategoryPage = () => {
 
 
 
-  // const handleImageError = (event) => {
-  //   event.target.src = "/placeholder-image.png";  
-  // };
-
   const handleImageError = (event) => {
-    event.target.src = "/placeholder-image.png";
-    event.target.onerror = null; // Prevent infinite loop
+    event.target.src = "/placeholder-image.png";  
   };
+
+  // const handleImageError = (event) => {
+  //   event.target.src = "/placeholder-image.png";
+  //   event.target.onerror = null; // Prevent infinite loop
+  // };
 
   return (
     <section>
