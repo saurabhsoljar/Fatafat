@@ -9,38 +9,44 @@ import ViewImage from "../components/ViewImage";
 import { HiPencil } from "react-icons/hi";
 import { MdDelete } from "react-icons/md";
 import { useSelector } from "react-redux";
+import EditSubCategory from "../components/EditSubCategory";
+import ConfirmBox from "../components/ConfirmBox";
+import toast from "react-hot-toast";
 
 const SubCategoryPage = () => {
   const [openAddSubCategory, setOpenAddSubCategory] = useState(false);
-  const [data, setData] = useState([]); // Initialize with empty array
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const columnHelper = createColumnHelper();
   const [ImageURL, setImageURL] = useState("");
+  const [openEdit, setOpenEdit] = useState(false);
+  const [editData, setEditData] = useState({
+    _id: "",
+  });
+  const [deleteSubCategory, setDeleteSubCategory] = useState({
+    _id: "",
+  });
+  const [openDeleteConfirmBox, setOpenDeleteConfirmBox] = useState(false);
 
   const allCategories = useSelector((state) => state.product.allCategory);
 
-  // SubCategoryPage.js
+  // Fetches sub-categories from API
   const fetchSubCategory = async () => {
     try {
       setLoading(true);
       const response = await Axios({
         ...SummaryApi.getSubCategory,
         method: "get",
-        params: { _: new Date().getTime() }, // Cache buster
+        params: { _: new Date().getTime() },
       });
 
       if (response.data.success) {
-        setData(
-          (prev) =>
-            JSON.stringify(prev) === JSON.stringify(response.data.data)
-              ? prev // Keep previous reference if same data
-              : response.data.data || [] // New reference if data changed
-        );
+        setData(response.data.data || []); // Updates sub-category list
       }
     } catch (error) {
-      setData([]);
+      setData([]); // Resets on error
     } finally {
-      setLoading(false);
+      setLoading(false); // Always stops loading
     }
   };
 
@@ -52,6 +58,7 @@ const SubCategoryPage = () => {
     columnHelper.accessor("name", {
       header: "Name",
     }),
+    // Image column with clickable preview
     columnHelper.accessor("image", {
       header: "Image",
       cell: ({ row }) => (
@@ -67,13 +74,17 @@ const SubCategoryPage = () => {
         </div>
       ),
     }),
+    // Category display with mapped tags
     columnHelper.accessor("category", {
       header: "Category",
       cell: ({ row }) => {
         return (
           <>
-            {row.original.category.map((c) => (
-              <p key={c._id} className="shadow-md px-1 inline-block">
+            {row.original.category.map((c, index) => (
+              <p
+                key={`${c._id}-${index}`}
+                className="shadow-md px-1 inline-block"
+              >
                 {c.name}
               </p>
             ))}
@@ -81,15 +92,30 @@ const SubCategoryPage = () => {
         );
       },
     }),
+    // Action buttons column
     columnHelper.accessor("_id", {
       header: "Action",
       cell: ({ row }) => {
         return (
           <div className="flex items-center justify-center gap-3">
-            <button className="p-2 rounded-full bg-green-200 text-green-500 hover:bg-green-300">
+            {/* Edit button */}
+            <button
+              onClick={() => {
+                setOpenEdit(true);
+                setEditData(row.original);
+              }}
+              className="p-2 rounded-full bg-green-200 text-green-500 hover:bg-green-300"
+            >
               <HiPencil size={20} />
             </button>
-            <button className="p-2 rounded-full text-red-500 bg-red-200 hover:bg-red-300">
+            {/* Delete button */}
+            <button
+              onClick={() => {
+                setDeleteSubCategory(row.original);
+                setOpenDeleteConfirmBox(true);
+              }}
+              className="p-2 rounded-full text-red-500 bg-red-200 hover:bg-red-300"
+            >
               <MdDelete size={20} />
             </button>
           </div>
@@ -98,8 +124,32 @@ const SubCategoryPage = () => {
     }),
   ];
 
+  // handle Delete SubCategory
+
+  const handleDeleteSubCategory = async () => {
+    // Handles sub-category deletion
+    try {
+      const response = await Axios({
+        url: `${SummaryApi.deleteSubCategory.url}/${deleteSubCategory._id}`,
+        method: SummaryApi.deleteSubCategory.method,
+      });
+
+      const { data: responseData } = response;
+
+      if (responseData.success) {
+        toast.success(responseData.message);
+        fetchSubCategory(); // Refresh data
+        setOpenDeleteConfirmBox(false); // Close confirmation
+        setDeleteSubCategory({ _id: "" }); // Reset deletion target
+      }
+    } catch (error) {
+      AxiosToastError(error); // Handle errors
+    }
+  };
+
   return (
     <section>
+      {/* Header Section */}
       <div className="p-2 font-semibold shadow-md bg-gray-300 flex items-center justify-between rounded">
         <h2 className="font-semibold">Sub Category</h2>
         <button
@@ -110,13 +160,11 @@ const SubCategoryPage = () => {
         </button>
       </div>
 
+      {/* Data Table */}
       <div>
-        <DisplayTable
-          data={data} // Now properly initialized
-          columns={columns}
-        />
+        <DisplayTable data={data} columns={columns} />
       </div>
-
+      {/* Modals */}
       {openAddSubCategory && (
         <UploadSubCategoryModel
           close={() => setOpenAddSubCategory(false)}
@@ -125,6 +173,23 @@ const SubCategoryPage = () => {
       )}
 
       {ImageURL && <ViewImage url={ImageURL} close={() => setImageURL("")} />}
+
+      {openEdit && (
+        <EditSubCategory
+          data={editData}
+          close={() => setOpenEdit(false)}
+          refreshData={fetchSubCategory}
+        />
+      )}
+
+      {openDeleteConfirmBox && (
+        <ConfirmBox
+          cancel={() => setOpenDeleteConfirmBox(false)}
+          close={() => setOpenDeleteConfirmBox(false)}
+          confirm={handleDeleteSubCategory}
+          refreshData={fetchSubCategory}
+        />
+      )}
     </section>
   );
 };
