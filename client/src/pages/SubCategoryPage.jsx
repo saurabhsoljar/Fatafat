@@ -161,7 +161,7 @@ const SubCategoryPage = () => {
       </div>
 
       {/* Data Table */}
-      <div>
+      <div className="overflow-auto w-full max-w-[95vw]">
         <DisplayTable data={data} columns={columns} />
       </div>
       {/* Modals */}

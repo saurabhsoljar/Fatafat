@@ -2,11 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import SummaryApi from "../common/SummaryApi";
 
-
-const initialValue = { 
+const initialValue = {
   allCategory: [],
-  subCategory: [],
-  product: []
+  allSubCategory: [],
+  product: [],
 };
 
 const productSlice = createSlice({
@@ -17,19 +16,25 @@ const productSlice = createSlice({
       if (Array.isArray(action.payload)) {
         state.allCategory = [...action.payload];
       } else {
-        console.error("setAllCategory received non-array payload:", action.payload);
+        console.error(
+          "setAllCategory received non-array payload:",
+          action.payload
+        );
         state.allCategory = [];
       }
     },
-    setSubCategory: (state, action) => {
+    setAllSubCategory: (state, action) => {
       if (Array.isArray(action.payload)) {
-        state.subCategory = [...action.payload];
+        state.allSubCategory = [...action.payload];
       } else {
-        console.error("setSubCategory received non-array payload:", action.payload);
-        state.subCategory = [];
+        console.error(
+          "setSubCategory received non-array payload:",
+          action.payload
+        );
+        state.allSubCategory = [];
       }
-    }
-  }
+    },
+  },
 });
 
 export const fetchCategories = () => async (dispatch) => {
@@ -43,6 +48,6 @@ export const fetchCategories = () => async (dispatch) => {
 };
 
 // Export actions
-export const { setAllCategory, setSubCategory } = productSlice.actions;
+export const { setAllCategory, setAllSubCategory } = productSlice.actions;
 
 export default productSlice.reducer;
