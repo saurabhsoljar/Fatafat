@@ -55,6 +55,16 @@ const productSchema = new mongoose.Schema(
   }
 );
 
+
+//create a test index
+productSchema.index({
+  name: "text",
+  description: "text",
+},{
+  name : 10,
+  description : 5
+});
+
 const productmodel = mongoose.model("product", productSchema);
 
 export default productmodel;
