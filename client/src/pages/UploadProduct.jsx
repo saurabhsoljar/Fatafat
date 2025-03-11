@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import uploadImage from "../utils/UploadImage";
 import Loading from "../components/Loading";
@@ -7,6 +7,10 @@ import { MdDelete } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { IoClose } from "react-icons/io5";
 import AddFieldComponent from "../components/AddFieldComponent";
+import Axios from "../utils/Axios";
+import SummaryApi from "../common/SummaryApi";
+import AxiosToastError from "../utils/AxiosToastError";
+import successAlert from "../utils/SuccessAlert";
 
 const UploadProduct = () => {
   const [data, setData] = useState({
@@ -56,6 +60,20 @@ const UploadProduct = () => {
     const file = e.target.files[0];
     if (!file) return;
 
+    // Validate file type before uploading
+    if (!file.type.startsWith("image/")) {
+      alert("Please upload a valid image file (e.g., JPEG, PNG).");
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      alert("File size should be less than 5MB.");
+      return;
+    }
+    if (file.size === 0) {
+      alert("File size should be greater than 0.");
+      return;
+    }
+
     setImageLoading(true);
     try {
       const response = await uploadImage(file);
@@ -63,18 +81,6 @@ const UploadProduct = () => {
 
       const imageUrl =
         response?.data?.url || response?.data?.data?.url || response?.url;
-
-      if (!imageUrl) {
-        throw new Error("Image URL not found in response");
-      }
-      if (!file.type.startsWith("image/")) {
-        alert("Please upload a valid image file (e.g., JPEG, PNG).");
-        return;
-      }
-      if (file.size > 5 * 1024 * 1024) {
-        alert("File size should be less than 5MB.");
-        return;
-      }
 
       setData((prev) => ({
         ...prev,
@@ -119,18 +125,80 @@ const UploadProduct = () => {
     setOpenAddField(false);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!data.name || !data.description || !data.image.length) {
-      alert("Please fill all required fields.");
+
+    const errors = validateForm(data);
+    if (Object.keys(errors).length > 0) {
+      alert(Object.values(errors).join("\n"));
       return;
     }
-    if (isNaN(data.price) || isNaN(data.stock) || isNaN(data.discount)) {
-      alert("Price, stock, and discount must be valid numbers.");
-      return;
+
+    try {
+      const response = await Axios({
+        ...SummaryApi.createProduct,
+        data: data,
+      });
+      const { data: responseData } = response;
+
+      if (responseData.success) {
+        successAlert(responseData.message);
+        setData({
+          name: "",
+          image: [],
+          category: [],
+          subCategory: [],
+          unit: "",
+          stock: "",
+          price: "",
+          discount: "",
+          description: "",
+          more_details: {},
+          publish: true,
+        });
+      }
+    } catch (error) {
+      AxiosToastError(error);
     }
-    console.log("data", data);
   };
+
+  const validateForm = (data) => {
+    const errors = {};
+
+    if (!data.name || data.name.length < 3) {
+      errors.name = "Product name must be at least 3 characters long.";
+    }
+    if (!data.description || data.description.length < 10) {
+      errors.description = "Description must be at least 10 characters long.";
+    }
+    if (data.image.length === 0) {
+      errors.image = "Please upload at least one image.";
+    }
+    if (data.category.length === 0) {
+      errors.category = "Please select at least one category.";
+    }
+    if (data.subCategory.length === 0) {
+      errors.subCategory = "Please select at least one sub-category.";
+    }
+    if (data.price <= 0 || data.stock <= 0 || data.discount < 0) {
+      errors.price = "Price, stock, and discount must be greater than 0.";
+    }
+    if (data.discount > data.price) {
+      errors.discount = "Discount cannot be greater than the price.";
+    }
+    if (data.discount > 100) {
+      errors.discount = "Discount cannot be greater than 100%.";
+    }
+    if (Object.keys(data.more_details).length === 0) {
+      errors.more_details = "Please add at least one more detail.";
+    }
+
+    return errors;
+  };
+
+  // useEffect(()=>{
+  //   successAlert("Upload successfully");
+  // },[])
 
   return (
     <section>
