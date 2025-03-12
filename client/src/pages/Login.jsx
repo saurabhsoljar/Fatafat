@@ -77,7 +77,7 @@ const Login = () => {
 
   // Render Function
   return (
-    <section className="w-full container mx-auto px-2">
+    <section className="w-full container mx-auto px-2 mt-40">
       <div className="bg-white my-4 w-full max-w-lg mx-auto rounded-lg p-8 shadow-xl">
         <div className="flex flex-col items-center mb-8">
           <h1 className="text-4xl font-extrabold text-center mb-2">

@@ -57,40 +57,53 @@ const UploadProduct = () => {
   };
 
   const handleUploadImage = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    // Validate file type before uploading
-    if (!file.type.startsWith("image/")) {
-      alert("Please upload a valid image file (e.g., JPEG, PNG).");
+    const files = Array.from(e.target.files);
+  
+    if (files.length === 0) return;
+  
+    // Check if adding these files exceeds the limit
+    if (data.image.length + files.length > 10) {
+      alert("You can upload a maximum of 10 images.");
       return;
     }
-    if (file.size > 5 * 1024 * 1024) {
-      alert("File size should be less than 5MB.");
-      return;
-    }
-    if (file.size === 0) {
-      alert("File size should be greater than 0.");
-      return;
-    }
-
+  
     setImageLoading(true);
+    
     try {
-      const response = await uploadImage(file);
-      console.log("Upload Response:", response);
-
-      const imageUrl =
-        response?.data?.url || response?.data?.data?.url || response?.url;
-
+      const uploadedImages = await Promise.all(
+        files.map(async (file) => {
+          if (!file.type.startsWith("image/")) {
+            alert("Please upload only valid image files.");
+            return null;
+          }
+          if (file.size > 5 * 1024 * 1024) {
+            alert("File size should be less than 5MB.");
+            return null;
+          }
+          if (file.size === 0) {
+            alert("File size should be greater than 0.");
+            return null;
+          }
+  
+          const response = await uploadImage(file);
+          return response?.data?.url || response?.data?.data?.url || response?.url;
+        })
+      );
+  
+      // Filter out failed uploads (null values)
+      const validImages = uploadedImages.filter(Boolean);
+  
       setData((prev) => ({
         ...prev,
-        image: [...prev.image, imageUrl],
+        image: [...prev.image, ...validImages],
       }));
     } catch (error) {
       console.error("Image upload failed:", error);
     }
+  
     setImageLoading(false);
   };
+  
 
   const handleDeleteImage = (index) => {
     setData((prev) => ({
@@ -264,6 +277,7 @@ const UploadProduct = () => {
                   id="productImage"
                   className="hidden"
                   accept="image/*"
+                  multiple
                   onChange={handleUploadImage}
                 />
               </label>

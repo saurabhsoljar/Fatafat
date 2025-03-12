@@ -4,6 +4,7 @@ import SummaryApi from "../common/SummaryApi";
 
 const initialValue = {
   allCategory: [],
+  loadingCategory : false,
   allSubCategory: [],
   product: [],
 };
@@ -22,6 +23,9 @@ const productSlice = createSlice({
         );
         state.allCategory = [];
       }
+    },
+    setLoadingCategory : (state,action)=>{
+      state.loadingCategory = action.payload
     },
     setAllSubCategory: (state, action) => {
       if (Array.isArray(action.payload)) {
@@ -48,6 +52,6 @@ export const fetchCategories = () => async (dispatch) => {
 };
 
 // Export actions
-export const { setAllCategory, setAllSubCategory } = productSlice.actions;
+export const { setAllCategory, setAllSubCategory,setLoadingCategory } = productSlice.actions;
 
 export default productSlice.reducer;
