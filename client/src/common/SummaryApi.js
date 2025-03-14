@@ -1,3 +1,4 @@
+import { get } from "mongoose";
 
 
 export const baseURL = "http://localhost:8080";
@@ -90,7 +91,20 @@ const SummaryApi = {
   getProductByCategory : {
     url : '/api/product/get-by-category',
     method : 'post'
-  }
+  },
+  getProductByCategoryAndSubCategory : {
+    url : '/api/product/get-product-by-category-and-subcategory',
+    method : 'post'
+  },
+  getProductDetails : {
+    url : '/api/product/get-product-details',
+    method : 'post'
+  },
+  updateProductDetails : {
+    url : '/api/product/update-product-details',
+    method : 'put'
+  },
+
 };
 
 export default SummaryApi;
