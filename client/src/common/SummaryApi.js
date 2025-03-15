@@ -104,6 +104,30 @@ const SummaryApi = {
     url : '/api/product/update-product-details',
     method : 'put'
   },
+  deleteProduct : {
+    url : '/api/product/delete',
+    method : 'delete'
+  },
+  searchProduct : {
+    url : '/api/product/search-product',
+    method : 'post'
+  },
+  addTocart : {
+    url : '/api/cart/create',
+    method : 'post'
+  },
+  getCartItem : {
+    url : '/api/cart/get',
+    method : 'get'
+  },
+  updateCartItemQty : {
+    url : '/api/cart/update-qty',
+    method : 'put'
+  },
+  deleteCartItem : {
+    url : '/api/cart/delete-cart-item',
+    method : 'delete'
+  },
 
 };
 

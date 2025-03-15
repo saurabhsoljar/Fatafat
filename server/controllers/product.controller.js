@@ -280,7 +280,7 @@ export const searchProduct = async(request,response)=>{
 
       const [data,dataCount] = await Promise.all([
         productmodel.find(query).sort({ createdAt  : -1 }).skip(skip).limit(limit).populate('category subCategory'),
-          ProductModel.countDocuments(query)
+          productmodel.countDocuments(query)
       ])
 
       return response.json({

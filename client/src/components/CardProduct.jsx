@@ -3,13 +3,13 @@ import { DisplayPriceInRupees } from "../utils/DisplayPriceInRupees";
 import { Link } from "react-router-dom";
 import { valideURLConvert } from "../utils/valideURLConvert";
 import { pricewithDiscount } from "../utils/PriceWithDiscount";
-// import SummaryApi from '../common/SummaryApi'
-// import AxiosToastError from '../utils/AxiosToastError'
-// import Axios from '../utils/Axios'
-// import toast from 'react-hot-toast'
+import SummaryApi from '../common/SummaryApi'
+import AxiosToastError from '../utils/AxiosToastError'
+import Axios from '../utils/Axios'
+import toast from 'react-hot-toast'
 import { useState } from "react";
-// import { useGlobalContext } from '../provider/GlobalProvider'
-// import AddToCartButton from "./AddToCartButton";
+import { useGlobalContext } from '../provider/GlobalProvider'
+import AddToCartButton from "./AddToCartButton";
 
 const CardProduct = ({ data }) => {
   const url = `/product/${valideURLConvert(data.name)}-${data._id}`;
@@ -51,13 +51,13 @@ const CardProduct = ({ data }) => {
             {DisplayPriceInRupees(pricewithDiscount(data.price, data.discount))}
           </div>
         </div>
-        {/* <div className="">
+        <div className="">
           {data.stock == 0 ? (
             <p className="text-red-500 text-sm text-center">Out of stock</p>
           ) : (
             <AddToCartButton data={data} />
           )}
-        </div> */}
+        </div>
       </div>
     </Link>
   );

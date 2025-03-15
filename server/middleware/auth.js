@@ -44,7 +44,8 @@ const auth = async (request, response, next) => {
     } else {
       console.error('Authentication error:', error); // Log the error
       return response.status(500).json({
-        message: error.message || 'Authentication error.',
+        message: "You have not login",
+        //error.message || 'Authentication error.',
         error: true,
         success: false,
       });

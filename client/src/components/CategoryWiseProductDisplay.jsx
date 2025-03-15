@@ -6,11 +6,15 @@ import SummaryApi from "../common/SummaryApi";
 import CardLoading from "./CardLoading";
 import CardProduct from "./CardProduct";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
+import { useSelector } from "react-redux";
+import { valideURLConvert } from "../utils/valideURLConvert";
 
 const CategoryWiseProductDisplay = ({ id, name }) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
-    const cintainerRef = useRef();
+    const containerRef = useRef();
+    const subCategoryData = useSelector((state) => state.product.allSubCategory);
+    const loadingCardNumber = new Array(6).fill(null);
 
     const fetchCategoryWiseProduct = async () => {
         try {
@@ -21,9 +25,9 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
             id: id,
             },
         });
+
         const { data: responseData } = response;
 
-        console.log(responseData);
         if (responseData.success) {
             setData(responseData.data);
         }
@@ -36,20 +40,32 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
 
     useEffect(() => {
         fetchCategoryWiseProduct();
-    }, [id]);
+    }, []);
 
     const handleScrollRight = () => {
-        cintainerRef.current.scrollLeft += 200;
+        containerRef.current.scrollLeft += 200;
     };
+
     const handleScrollLeft = () => {
-        cintainerRef.current.scrollLeft -= 200;
+        containerRef.current.scrollLeft -= 200;
     };
 
-    const redirectURL = `/category/${id}`;
+    const handleRedirectProductListpage = () => {
+        const subcategory = subCategoryData.find((sub) => {
+        const filterData = sub.category.some((c) => {
+            return c._id == id;
+        });
 
-    const loadingCardNumber = new Array(6).fill(null);
+        return filterData ? true : null;
+        });
+        const url = `/${valideURLConvert(name)}-${id}/${valideURLConvert(
+        subcategory?.name
+        )}-${subcategory?._id}`;
 
+        return url;
+    };
 
+    const redirectURL = handleRedirectProductListpage();
     return (
         <div>
         <div className="container mx-auto p-4 flex items-center justify-between gap-4">
@@ -58,28 +74,28 @@ const CategoryWiseProductDisplay = ({ id, name }) => {
             See All
             </Link>
         </div>
-
-        <div className="relative flex items-center"> 
-        <div className="flex  gap-4 md:gap-6 lg:gap-8 container mx-auto px-4 overflow-x-scroll scrollbar-none scroll-smooth" ref={cintainerRef}>
+        <div className="relative flex items-center ">
+            <div
+            className=" flex gap-4 md:gap-6 lg:gap-8 container mx-auto px-4 overflow-x-scroll scrollbar-none scroll-smooth"
+            ref={containerRef}
+            >
             {loading &&
-            loadingCardNumber.map((_, index) => {
+                loadingCardNumber.map((_, index) => {
                 return (
-                <CardLoading key={+"CategoryWiseProductDisplay123" + index} />
+                    <CardLoading key={"CategorywiseProductDisplay123" + index} />
                 );
-            })}
+                })}
 
             {data.map((p, index) => {
-            return (
+                return (
                 <CardProduct
-                data={p}
-                key={p._id + "CategoryWiseProductDisplay" + index}
+                    data={p}
+                    key={p._id + "CategorywiseProductDisplay" + index}
                 />
-            );
+                );
             })}
-
-            
-        </div>
-        <div className="w-full left-0 right-0 container mx-auto  px-2  absolute hidden lg:flex justify-between">
+            </div>
+            <div className="w-full left-0 right-0 container mx-auto  px-2  absolute hidden lg:flex justify-between">
             <button
                 onClick={handleScrollLeft}
                 className="z-10 relative bg-white hover:bg-gray-100 shadow-lg text-lg p-2 rounded-full"

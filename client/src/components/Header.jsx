@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../assets/logo.png";
 import Search from "./Search";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -8,6 +8,8 @@ import { BsCart4 } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
 import UserMenu from "./UserMenu";
+import { DisplayPriceInRupees } from "../utils/DisplayPriceInRupees";
+import DisplayCartItem from "./DisplayCartItem";
 
 const Header = () => {
   const [isMobileCheck] = UseMobile();
@@ -16,6 +18,12 @@ const Header = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state?.user);
   const [openUserMenu, setOpenUserMenu] = useState(false);
+  const cartItem = useSelector(state => state.cartItem.cart);
+  // const [totalPrice, setTotalPrice] = useState(0);
+  // const [totalQty, setTotalQty] = useState(0);
+  const {totalPrice,totalQty} = useGlobalContext()
+  const [openCartSection, setOpenCartSection] = useState(false);
+  
 
   const redirectToLoginPage = () => {
     navigate("/login");
@@ -32,6 +40,19 @@ const Header = () => {
     }
     navigate("/user");
   };
+
+  //total item and price
+  useEffect(()=>{
+    const qty = cartItem.reduce((preve,curr) =>{
+      return preve + curr.quantity
+    },0)
+    setTotalQty(qty)
+
+    const tPrice = cartItem.reduce((preve,curr)=>{
+      return preve + (curr?.productId?.price * curr.quantity)
+    },0)
+    setTotalPrice(tPrice)
+  },[cartItem])
 
   return (
     <header className="fixed w-full top-0 left-0 right-0 h-24 lg:h-20 bg-white shadow-md z-50">
@@ -113,9 +134,19 @@ const Header = () => {
             </div>
 
             {/* Cart Button */}
-            <button className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 px-4 py-2 rounded-full text-white shadow-md hover:shadow-xl transition-all relative">
-              <BsCart4 className="w-6 h-6" />
-              <span className="font-semibold hidden lg:block">My Cart</span>
+            <button onClick={()=>setOpenCartSection(true)} className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 px-4 py-2 rounded-full text-white shadow-md hover:shadow-xl transition-all relative">
+              <BsCart4 className="w-6 h-6 text-semibold" />
+              {
+                cartItem[0] ? (
+                  <div>
+                    <p>{totalQty}  Items</p>
+                    <p>{DisplayPriceInRupees(totalPrice)}</p>
+                  </div>
+                ):(
+                  <span className="font-semibold hidden lg:block">My Cart</span>
+                )
+              }
+              
               <span className="absolute -top-2 -right-1 bg-white text-blue-600 rounded-full px-2 py-1 text-xs font-bold shadow-sm">
                 0
               </span>
@@ -130,6 +161,11 @@ const Header = () => {
           </div>
         )}
       </div>
+      {
+        openCartSection && (
+          <DisplayCartItem close={()=>setOpenCartSection(false)}/>
+        )
+      }
     </header>
   );
 };

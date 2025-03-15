@@ -12,6 +12,7 @@ import Axios from "./utils/Axios";
 import SummaryApi from "./common/SummaryApi";
 import { fetchCategories } from "./store/productSlice";
 
+
 function App() {
   const dispatch = useDispatch();
 
@@ -60,6 +61,8 @@ function App() {
     }
   };
 
+   
+
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
@@ -68,17 +71,23 @@ function App() {
     fetchUser();
     fetchCategory();
     fetchSubCategory();
+     
   }, []);
 
   return (
-    <>
+    <GlobalProvider>
       <Header />
       <main className="min-h-[80vh]">
         <Outlet />
       </main>
       <Footer />
       <Toaster />
-    </>
+      {
+        location.pathname !== '/checkout' && (
+          <CartMobileLink/>
+        )
+      }
+    </GlobalProvider>
   );
 }
 

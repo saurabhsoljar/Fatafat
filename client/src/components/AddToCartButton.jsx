@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-//import { useGlobalContext } from '../provider/GlobalProvider'
+import { useGlobalContext } from '../provider/GlobalProvider'
 import Axios from '../utils/Axios'
 import SummaryApi from '../common/SummaryApi'
 import toast from 'react-hot-toast'
@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux'
 import { FaMinus, FaPlus } from "react-icons/fa6";
 
 const AddToCartButton = ({ data }) => {
-    //const { fetchCartItem, updateCartItem, deleteCartItem } = useGlobalContext()
+    const { fetchCartItem, updateCartItem, deleteCartItem } = useGlobalContext()
     const [loading, setLoading] = useState(false)
     const cartItem = useSelector(state => state.cartItem.cart)
     const [isAvailableCart, setIsAvailableCart] = useState(false)
@@ -61,11 +61,11 @@ const AddToCartButton = ({ data }) => {
         e.preventDefault()
         e.stopPropagation()
     
-       const response = await  updateCartItem(cartItemDetails?._id,qty+1)
-        
-       if(response.success){
-        toast.success("Item added")
-       }
+        const response = await  updateCartItem(cartItemDetails?._id,qty+1)
+            
+        if(response.success){
+            toast.success("Item added")
+        }
     }
 
     const decreaseQty = async(e) => {
