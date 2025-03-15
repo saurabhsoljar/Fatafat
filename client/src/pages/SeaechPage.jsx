@@ -6,7 +6,7 @@ import AxiosToastError from '../utils/AxiosToastError'
 import CardProduct from '../components/CardProduct'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import { useLocation } from 'react-router-dom'
-import noDataImage from '../assets/no-data.png'
+import noDataImage from '../assets/No_Data.png'
 
 const SearchPage = () => {
   const [data,setData] = useState([])

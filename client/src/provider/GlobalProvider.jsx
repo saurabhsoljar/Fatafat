@@ -2,7 +2,7 @@ import { createContext,useContext, useEffect, useState } from "react";
 import Axios from "../utils/Axios";
 import SummaryApi from "../common/SummaryApi";
 import { useDispatch, useSelector } from "react-redux";
-import { handleAddItemCart } from "../store/cartProduct";
+import { handleAddItemCart } from "../store/CartProduct.js";
 import AxiosToastError from "../utils/AxiosToastError";
 import toast from "react-hot-toast";
 import { pricewithDiscount } from "../utils/PriceWithDiscount";

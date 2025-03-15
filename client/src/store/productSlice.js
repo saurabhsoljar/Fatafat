@@ -35,7 +35,7 @@ const productSlice = createSlice({
           "setSubCategory received non-array payload:",
           action.payload
         );
-        state.allSubCategory = [];
+        state.allSubCategory = [...action.payload];
       }
     },
   },
@@ -44,14 +44,12 @@ const productSlice = createSlice({
 export const fetchCategories = () => async (dispatch) => {
   try {
     const response = await axios(SummaryApi.getCategory);
-    //console.log("API Response:", response.data); // Debugging line
-    dispatch(setAllCategory(response.data?.data || [])); // Ensure it's an array
+    dispatch(setAllCategory(response.data?.data || []));  
   } catch (error) {
     console.error("Category fetch error:", error);
   }
 };
 
-// Export actions
 export const { setAllCategory, setAllSubCategory,setLoadingCategory } = productSlice.actions;
 
 export default productSlice.reducer;
