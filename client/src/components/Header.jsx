@@ -10,6 +10,8 @@ import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
 import UserMenu from "./UserMenu";
 import { DisplayPriceInRupees } from "../utils/DisplayPriceInRupees";
 import DisplayCartItem from "./DisplayCartItem";
+import { useGlobalContext } from "../provider/GlobalProvider";
+
 
 const Header = () => {
   const [isMobileCheck] = UseMobile();
@@ -33,26 +35,27 @@ const Header = () => {
     setOpenUserMenu(false);
   };
 
-  const handleMobileUser = () => {
-    if (!user._id) {
-      navigate("/login");
-      return;
+  const handleMobileUser = ()=>{
+    if(!user._id){
+        navigate("/login")
+        return
     }
-    navigate("/user");
-  };
+
+    navigate("/user")
+}
 
   //total item and price
-  useEffect(()=>{
-    const qty = cartItem.reduce((preve,curr) =>{
-      return preve + curr.quantity
-    },0)
-    setTotalQty(qty)
+  // useEffect(()=>{
+  //   const qty = cartItem.reduce((preve,curr) =>{
+  //     return preve + curr.quantity
+  //   },0)
+  //   setTotalQty(qty)
 
-    const tPrice = cartItem.reduce((preve,curr)=>{
-      return preve + (curr?.productId?.price * curr.quantity)
-    },0)
-    setTotalPrice(tPrice)
-  },[cartItem])
+  //   const tPrice = cartItem.reduce((preve,curr)=>{
+  //     return preve + (curr?.productId?.price * curr.quantity)
+  //   },0)
+  //   setTotalPrice(tPrice)
+  // },[cartItem])
 
   return (
     <header className="fixed w-full top-0 left-0 right-0 h-24 lg:h-20 bg-white shadow-md z-50">
@@ -93,8 +96,9 @@ const Header = () => {
               {user?._id ? (
                 <>
                   <button
-                    onClick={() => isMobileCheck && setOpenUserMenu(!openUserMenu)}
+                    //onClick={() => isMobileCheck && setOpenUserMenu(!openUserMenu)}
                     className="flex items-center gap-2 text-gray-700 hover:text-blue-600 transition-colors"
+                    onClick={handleMobileUser}
                   >
                     <FaRegUserCircle className="w-6 h-6" />
                     <span className="hidden lg:block font-medium">

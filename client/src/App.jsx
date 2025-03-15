@@ -11,7 +11,8 @@ import { useDispatch } from "react-redux";
 import Axios from "./utils/Axios";
 import SummaryApi from "./common/SummaryApi";
 import { fetchCategories } from "./store/productSlice";
-
+import GlobalProvider from "./provider/GlobalProvider";
+import CartMobileLink from "./components/CartMobile";
 
 function App() {
   const dispatch = useDispatch();
