@@ -93,8 +93,11 @@ const AddToCartButton = ({ data }) => {
                         <button onClick={increaseQty} className='bg-green-600 hover:bg-green-700 text-white flex-1 w-full p-1 rounded flex items-center justify-center'><FaPlus /></button>
                     </div>
                 ) : (
-                    <button onClick={handleADDTocart} className='bg-green-600 hover:bg-green-700 text-white px-2 lg:px-4 py-1 rounded'>
-                        {loading ? <Loading /> : "Add"}
+                    <button onClick={handleADDTocart} className='bg-green-600 hover:bg-green-700 text-white text-sm px-2 lg:px-4 py-1 rounded'>
+                    {loading ? (
+                        <div className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]">
+                        </div>
+                    ) : "Add"}
                     </button>
                 )
             }

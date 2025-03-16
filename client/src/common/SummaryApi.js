@@ -105,7 +105,7 @@ const SummaryApi = {
     method : 'put'
   },
   deleteProduct : {
-    url : '/api/product/delete',
+    url : '/api/product/delete-product',
     method : 'delete'
   },
   searchProduct : {
