@@ -132,9 +132,7 @@ const DisplayCartItem = ({ close }) => {
             <div className="p-2">
                 <div className="bg-green-700 text-neutral-100 px-4 font-bold text-base py-4 static bottom-3 rounded flex items-center gap-4 justify-between">
                 <div>{DisplayPriceInRupees(totalPrice)}</div>
-                {
-                    
-                }
+                {}
                 <button
                     onClick={redirectToCheckoutPage}
                     className="flex items-center gap-1"
