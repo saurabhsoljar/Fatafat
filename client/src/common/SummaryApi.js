@@ -1,6 +1,3 @@
-// import { get } from "mongoose";
-
-
 export const baseURL = "http://localhost:8080";
 
 const SummaryApi = {
@@ -56,79 +53,106 @@ const SummaryApi = {
     url: "/api/category/get",
     method: "get",
   },
-  updateCategory : {
+  updateCategory: {
     url: "/api/category/update",
     method: "put",
   },
-  deleteCategory : {
+  deleteCategory: {
     url: "/api/category/delete",
     method: "delete",
   },
-  createSubCategory : {
-    url : "/api/subcategory/create",
-    method : 'post'
+  createSubCategory: {
+    url: "/api/subcategory/create",
+    method: "post",
   },
-  getSubCategory : {
-    url : '/api/subcategory/get',
-    method : 'get'
+  getSubCategory: {
+    url: "/api/subcategory/get",
+    method: "get",
   },
-  updateSubCategory : {
-    url : '/api/subcategory/update',
-    method : 'put'
+  updateSubCategory: {
+    url: "/api/subcategory/update",
+    method: "put",
   },
   deleteSubCategory: {
-    url: '/api/subcategory/delete',   
-    method: 'delete'
+    url: "/api/subcategory/delete",
+    method: "delete",
   },
-  createProduct : {
-    url : '/api/product/create',
-    method : 'post'
+  createProduct: {
+    url: "/api/product/create",
+    method: "post",
   },
-  getProduct : {
-    url : '/api/product/get',
-    method : 'post'
+  getProduct: {
+    url: "/api/product/get",
+    method: "post",
   },
-  getProductByCategory : {
-    url : '/api/product/get-by-category',
-    method : 'post'
+  getProductByCategory: {
+    url: "/api/product/get-by-category",
+    method: "post",
   },
-  getProductByCategoryAndSubCategory : {
-    url : '/api/product/get-product-by-category-and-subcategory',
-    method : 'post'
+  getProductByCategoryAndSubCategory: {
+    url: "/api/product/get-product-by-category-and-subcategory",
+    method: "post",
   },
-  getProductDetails : {
-    url : '/api/product/get-product-details',
-    method : 'post'
+  getProductDetails: {
+    url: "/api/product/get-product-details",
+    method: "post",
   },
-  updateProductDetails : {
-    url : '/api/product/update-product-details',
-    method : 'put'
+  updateProductDetails: {
+    url: "/api/product/update-product-details",
+    method: "put",
   },
-  deleteProduct : {
-    url : '/api/product/delete-product',
-    method : 'delete'
+  deleteProduct: {
+    url: "/api/product/delete-product",
+    method: "delete",
   },
-  searchProduct : {
-    url : '/api/product/search-product',
-    method : 'post'
+  searchProduct: {
+    url: "/api/product/search-product",
+    method: "post",
   },
-  addTocart : {
-    url : '/api/cart/create',
-    method : 'post'
+  addTocart: {
+    url: "/api/cart/create",
+    method: "post",
   },
-  getCartItem : {
-    url : '/api/cart/get',
-    method : 'get'
+  getCartItem: {
+    url: "/api/cart/get",
+    method: "get",
   },
-  updateCartItemQty : {
-    url : '/api/cart/update-qty',
-    method : 'put'
+  updateCartItemQty: {
+    url: "/api/cart/update-qty",
+    method: "put",
   },
-  deleteCartItem : {
-    url : '/api/cart/delete-cart-item',
-    method : 'delete'
+  deleteCartItem: {
+    url: "/api/cart/delete-cart-item",
+    method: "delete",
   },
-
+  createAddress: {
+    url: "/api/address/create",
+    method: "post",
+  },
+  getAddress: {
+    url: "/api/address/get",
+    method: "get",
+  },
+  updateAddress: {
+    url: "/api/address/update",
+    method: "put",
+  },
+  disableAddress: {
+    url: "/api/address/disable",
+    method: "delete",
+  },
+  CashOnDeliveryOrder: {
+    url: "/api/order/cash-on-delivery",
+    method: "post",
+  },
+  payment_url: {
+    url: "/api/order/checkout",
+    method: "post",
+  },
+  getOrderItems: {
+    url: "/api/order/order-list",
+    method: "get",
+  },
 };
 
 export default SummaryApi;

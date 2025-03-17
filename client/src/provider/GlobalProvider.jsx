@@ -30,7 +30,7 @@ const GlobalProvider = ({children}) => {
     
           if(responseData.success){
             dispatch(handleAddItemCart(responseData.data))
-            console.log(responseData)
+            //console.log(responseData)
           }
     
         } catch (error) {
@@ -108,12 +108,14 @@ const GlobalProvider = ({children}) => {
           ...SummaryApi.getAddress
         })
         const { data : responseData } = response
+        console.log("Address API Response:", responseData)
 
         if(responseData.success){
           dispatch(handleAddAddress(responseData.data))
         }
       } catch (error) {
-          // AxiosToastError(error)
+          AxiosToastError(error)
+        console.error("Address fetch error:", error)
       }
     }
     const fetchOrder = async()=>{
