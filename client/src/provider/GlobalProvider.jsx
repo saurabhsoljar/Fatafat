@@ -108,14 +108,14 @@ const GlobalProvider = ({children}) => {
           ...SummaryApi.getAddress
         })
         const { data : responseData } = response
-        console.log("Address API Response:", responseData)
+        //console.log("Address API Response:", responseData)
 
         if(responseData.success){
           dispatch(handleAddAddress(responseData.data))
         }
       } catch (error) {
           AxiosToastError(error)
-        console.error("Address fetch error:", error)
+        //console.error("Address fetch error:", error)
       }
     }
     const fetchOrder = async()=>{

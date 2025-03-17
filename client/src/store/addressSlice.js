@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialValue = {
     addressList : []
 }
-console.log("initialValue",initialValue);
+//console.log("initialValue",initialValue);
 
 
 const addressSlice = createSlice({
