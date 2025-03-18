@@ -114,7 +114,7 @@ const GlobalProvider = ({children}) => {
           dispatch(handleAddAddress(responseData.data))
         }
       } catch (error) {
-          AxiosToastError(error)
+          //AxiosToastError(error)
         //console.error("Address fetch error:", error)
       }
     }

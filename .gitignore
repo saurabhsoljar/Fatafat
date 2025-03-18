@@ -23,3 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+#manul change
+client/node_modules
+server/node_modules
+.env
+.client/.env
+.server/.env
