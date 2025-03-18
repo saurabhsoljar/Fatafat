@@ -58,7 +58,7 @@ const Header = () => {
   // },[cartItem])
 
   return (
-    <header className="fixed w-full top-0 left-0 right-0 h-24 lg:h-20 bg-white shadow-md z-50">
+    <header className="fixed w-full top-0 left-0 right-0 h-16 lg:h-20 bg-white shadow-md z-50">
       <div className="container mx-auto h-full px-4">
         <div className="h-full flex items-center justify-between">
           {/* Logo Section */}
@@ -160,7 +160,7 @@ const Header = () => {
 
         {/* Mobile Search */}
         {isMobileCheck && !isSearchPage && (
-          <div className="absolute bottom-0 left-0 right-0 px-4 pb-2 bg-white border-t border-gray-100">
+          <div className="absolute bottom-0 left-0 right-0 px-4 pb-2 bg-white border-t border-gray-100 hidden lg:block">
             <Search />
           </div>
         )}
