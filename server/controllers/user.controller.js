@@ -118,7 +118,7 @@ export async function verifyEmailController(request, response) {
     return response.status(500).json({
       message: "An error occurred during email verification.",
       error: error.message,
-      success: false, // Corrected to false
+      success: false, 
     });
   }
 }
@@ -466,7 +466,7 @@ export async function refreshToken(request, response) {
   try {
     const refreshToken =
       request.cookies.refreshToken ||
-      request?.header?.authorization?.split(" ")[1]; //[Bearer Token]
+      request?.header?.authorization?.split(" ")[1];  
 
     if (!refreshToken) {
       return response.status(401).json({
@@ -544,4 +544,4 @@ export async function userDetails(request, response) {
   }
 }
 
-// export default{ registerUserController, verifyEmailController,loginController,logoutController,uploadAvatar};
+
