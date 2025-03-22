@@ -5,6 +5,14 @@ export const addToCartItemController = async(request,response)=>{
     try {
         const  userId = request.userId
         const { productId } = request.body
+
+        if (!userId) {
+            return response.status(401).json({
+                message: "Please login to add item to cart",
+                error: true,
+                success: false
+            });
+        }
         
         if(!productId){
             return response.status(402).json({
