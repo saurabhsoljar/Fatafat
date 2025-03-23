@@ -124,23 +124,38 @@ const CheckoutPage = () => {
             <div className='w-full max-w-md bg-white py-4 px-2'>
             {/**summary**/}
             <h3 className='text-lg font-semibold'>Summary</h3>
+            {/* Inside the Bill details section */}
             <div className='bg-white p-4'>
                 <h3 className='font-semibold'>Bill details</h3>
                 <div className='flex gap-4 justify-between ml-1'>
-                <p>Items total</p>
-                <p className='flex items-center gap-2'><span className='line-through text-neutral-400'>{DisplayPriceInRupees(notDiscountTotalPrice)}</span><span>{DisplayPriceInRupees(totalPrice)}</span></p>
+                    <p>Items total</p>
+                    <p className='flex items-center gap-2'>
+                        <span className='line-through text-neutral-400'>{DisplayPriceInRupees(notDiscountTotalPrice)}</span>
+                        <span>{DisplayPriceInRupees(totalPrice)}</span>
+                    </p>
+                </div>
+                {/* Add this new discount section */}
+                {
+                    (notDiscountTotalPrice - totalPrice) > 0 && (
+                        <div className='flex gap-4 justify-between ml-1'>
+                            <p>Total Discount</p>
+                            <p className='text-green-600'>
+                                -{DisplayPriceInRupees(notDiscountTotalPrice - totalPrice)}
+                            </p>
+                        </div>
+                    )
+                }
+                <div className='flex gap-4 justify-between ml-1'>
+                    <p>Quantity total</p>
+                    <p className='flex items-center gap-2'>{totalQty} item</p>
                 </div>
                 <div className='flex gap-4 justify-between ml-1'>
-                <p>Quntity total</p>
-                <p className='flex items-center gap-2'>{totalQty} item</p>
-                </div>
-                <div className='flex gap-4 justify-between ml-1'>
-                <p>Delivery Charge</p>
-                <p className='flex items-center gap-2'>Free</p>
+                    <p>Delivery Charge</p>
+                    <p className='flex items-center gap-2'>Free</p>
                 </div>
                 <div className='font-semibold flex items-center justify-between gap-4'>
-                <p >Grand total</p>
-                <p>{DisplayPriceInRupees(totalPrice)}</p>
+                    <p>Grand total</p>
+                    <p>{DisplayPriceInRupees(totalPrice)}</p>
                 </div>
             </div>
             <div className='w-full flex flex-col gap-4'>

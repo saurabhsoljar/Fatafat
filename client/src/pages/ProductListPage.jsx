@@ -28,10 +28,10 @@ const ProductListPage = () => {
       ? subCategory.slice(0, subCategory.length - 1).join(" ")
       : "";
 
-  console.log("Params:", params);
-  console.log("SubCategory Param:", params.subCategory);
-  console.log("Extracted Category ID:", categoryId);
-  console.log("Extracted SubCategory ID:", subCategoryId);
+  // console.log("Params:", params);
+  // console.log("SubCategory Param:", params.subCategory);
+  // console.log("Extracted Category ID:", categoryId);
+  // console.log("Extracted SubCategory ID:", subCategoryId);
 
   const fetchProductdata = async () => {
     try {

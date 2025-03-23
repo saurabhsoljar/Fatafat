@@ -138,23 +138,26 @@ const Header = () => {
             </div>
 
             {/* Cart Button */}
-            <button onClick={()=>setOpenCartSection(true)} className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 px-4 py-2 rounded-full text-white shadow-md hover:shadow-xl transition-all relative">
-              <BsCart4 className="w-6 h-6 text-semibold" />
-              {
-                cartItem[0] ? (
-                  <div>
-                    <p>{totalQty}  Items</p>
-                    <p>{DisplayPriceInRupees(totalPrice)}</p>
-                  </div>
-                ):(
-                  <span className="font-semibold hidden lg:block">My Cart</span>
-                )
-              }
-              
-              <span className="absolute -top-2 -right-1 bg-white text-blue-600 rounded-full px-2 py-1 text-xs font-bold shadow-sm">
-                0
-              </span>
-            </button>
+            <button 
+            onClick={()=>setOpenCartSection(true)} 
+            className="flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 px-3 py-1.5 md:px-4 md:py-2 rounded-full text-white shadow-md hover:shadow-xl transition-all relative"
+          >
+            <BsCart4 className="w-5 h-5 md:w-6 md:h-6" />
+            {
+              cartItem[0] ? (
+                <div className="hidden md:block">
+                  <p className="text-sm md:text-base">{totalQty} Items</p>
+                  <p className="text-xs md:text-sm">{DisplayPriceInRupees(totalPrice)}</p>
+                </div>
+              ) : (
+                <span className="font-semibold hidden md:block">My Cart</span>
+              )
+            }
+            
+            <span className="absolute -top-2 -right-1 bg-white text-blue-600 rounded-full px-1.5 py-0.5 md:px-2 md:py-1 text-[10px] md:text-xs font-bold shadow-sm">
+              {cartItem[0] ? totalQty : 0}
+            </span>
+          </button>
           </div>
         </div>
 
