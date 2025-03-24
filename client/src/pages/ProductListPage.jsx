@@ -79,7 +79,7 @@ const ProductListPage = () => {
   }, [params, AllSubCategory]);
 
   return (
-    <section className="sticky top-24 lg:top-20">
+    <section className=" top-24 lg:top-20 mt-20">
       <div className="container sticky top-24  mx-auto grid grid-cols-[90px,1fr]  md:grid-cols-[200px,1fr] lg:grid-cols-[280px,1fr]">
         {/**sub category **/}
         <div className=" min-h-[88vh] max-h-[88vh] overflow-y-scroll  grid gap-1 shadow-md scrollbarCustom bg-white py-2">
